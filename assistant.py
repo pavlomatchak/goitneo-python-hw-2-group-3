@@ -1,4 +1,5 @@
-from collections import UserDict
+from address_book import AddressBook
+from record import Record
 
 def input_error(func):
     def inner(*args, **kwargs):
@@ -12,59 +13,6 @@ def input_error(func):
             return 'Please provide full info'
 
     return inner
-
-
-class Field:
-    def __init__(self, value):
-        self.value = value
-
-    def __str__(self):
-        return str(self.value)
-    
-class Name(Field):
-    def __init__(self, name):
-        super().__init__(name)
-
-class Phone(Field):
-    def __init__(self, phone):
-        super().__init__(phone)
-
-class Record:
-    def __init__(self, name):
-        self.name = Name(name)
-        self.phones = []
-
-    def add_phone(self, phone):
-        self.phones.append(Phone(phone))
-
-    def edit_phone(self, old_phone, new_phone):
-        for index, phone in enumerate(self.phones):
-            if str(phone) == old_phone:
-                self.phones[index] = Phone(new_phone)
-
-    def find_phone(self, searched_phone):
-        for phone in self.phones:
-            if str(phone) == searched_phone:
-                return str(phone)
-
-    def __str__(self):
-        return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}"
-    
-class AddressBook(UserDict):
-    def __init__(self):
-        self.data = {}
-    
-    def add_record(self, record):
-        self.data[record.name.value] = record
-
-    def delete(self, name):
-        del self.data[name]
-
-    def find(self,name):
-        for key, record in self.data.items():
-            if key == name:
-                return record
-        
 
 def parse_input(user_input):
     cmd, *args = user_input.split()
